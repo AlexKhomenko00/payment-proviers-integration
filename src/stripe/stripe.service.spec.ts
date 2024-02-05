@@ -5,6 +5,8 @@ import { stripeCreateCustomerResponseMock } from './mocks/create-customer-respon
 import { stripeCreatePaymentIntentResponseMock } from './mocks/create-payment-intent-response.mock';
 import { StripeService } from './stripe.service';
 import Stripe from 'stripe';
+import { stripeUpdateCustomerCreditCardMockResponse } from './mocks/update-customer-credit-card-response';
+import { stripeCreateSubscriptionMockResponse } from './mocks/create-subscription-response';
 
 describe('StripeService', () => {
   let service: StripeService;
@@ -63,6 +65,28 @@ describe('StripeService', () => {
       id: 'pm_123',
     });
   });
+
+  it('should setup default credit card for customer', async () => {
+    const paymentMethod = await service.setupDefaultCardForCustomer({
+      customerId: 'cus_123',
+      paymentMethodId: 'pm_123',
+    });
+
+    expect(paymentMethod).toEqual({
+      id: 'pm_123',
+    });
+  });
+
+  it('should create subscription', async () => {
+    const subscription = await service.createSubscription({
+      customerId: 'cus_123',
+      priceId: 'price_123',
+    });
+
+    expect(subscription).toEqual({
+      id: stripeCreateSubscriptionMockResponse.id,
+    });
+  });
 });
 
 jest.mock('stripe', () => ({
@@ -76,11 +100,19 @@ jest.mock('stripe', () => ({
           create: jest
             .fn()
             .mockResolvedValue(stripeCreatePaymentIntentResponseMock),
+          update: jest
+            .fn()
+            .mockResolvedValue(stripeUpdateCustomerCreditCardMockResponse),
         },
         setupIntents: {
           create: jest
             .fn()
             .mockResolvedValue(stripeCreatePaymentIntentResponseMock),
+        },
+        subscriptions: {
+          create: jest
+            .fn()
+            .mockResolvedValue(stripeCreateSubscriptionMockResponse),
         },
       }) as Record<keyof Stripe, any>,
   ),

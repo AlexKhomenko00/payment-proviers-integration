@@ -1,6 +1,5 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
-import { AddCreditCardDto } from './dto/add-credit-card.dto';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { StripeCreditCardDto } from './dto/credit-card.dto';
 import { StripeService } from './stripe.service';
 
 @Controller('stripe/credit-card')
@@ -8,12 +7,18 @@ export class StripeCreditCardController {
   constructor(private readonly stripeService: StripeService) {}
 
   @Post()
-  async addCreditCard(
-    @Body() dto: AddCreditCardDto,
-    @Req() request: Request & { user: { stripeCustomerId: string } },
-  ) {
+  async addCreditCard(@Body() dto: StripeCreditCardDto) {
     return this.stripeService.attachCardToCustomer({
-      customerId: request.user.stripeCustomerId,
+      customerId: dto.stripeCustomerId,
+      paymentMethodId: dto.paymentMethodId,
+    });
+  }
+
+  @Post('default')
+  @HttpCode(200)
+  async setDefaultCard(@Body() dto: StripeCreditCardDto) {
+    await this.stripeService.setupDefaultCardForCustomer({
+      customerId: dto.stripeCustomerId,
       paymentMethodId: dto.paymentMethodId,
     });
   }
