@@ -11,7 +11,5 @@ import { PaymentModule } from './payment/payment.module';
     }),
     PaymentModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
