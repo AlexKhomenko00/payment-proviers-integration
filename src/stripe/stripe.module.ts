@@ -1,17 +1,32 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
+import { StripeModuleRegisterOptions } from './interfaces/stripe-config.interface';
+import { STRIPE_MODULE_OPTIONS } from './stripe.constants';
 import { StripeService } from './stripe.service';
-import { StripeCreditCardController } from './stripe-credit-card.controller';
-import { StripeSubscriptionController } from './subscription/stripe-subscription.controller';
-import { StripeSubscriptionService } from './subscription/stripe-subscription.service';
-import { StripeWebhookController } from './stripe-webhook.controller';
+import { StripeSubscriptionService } from './stripe-subscription.service';
 
-@Module({
-  imports: [],
-  providers: [StripeService, StripeSubscriptionService],
-  controllers: [
-    StripeCreditCardController,
-    StripeSubscriptionController,
-    StripeWebhookController,
-  ],
-})
-export class StripeModule {}
+@Module({})
+export class StripeModule {
+  static register(options: StripeModuleRegisterOptions): DynamicModule {
+    const optionsProvider = this.createRegisterOptionsProvider(options);
+
+    return {
+      module: StripeModule,
+      imports: options.imports,
+      providers: [StripeService, StripeSubscriptionService, optionsProvider],
+      exports: [StripeService, StripeSubscriptionService],
+    };
+  }
+
+  private static createRegisterOptionsProvider(
+    options: StripeModuleRegisterOptions,
+  ): Provider {
+    return {
+      provide: STRIPE_MODULE_OPTIONS,
+      useFactory: async (...args: any[]) => {
+        const config = await options.useFactory(...args);
+        return { config };
+      },
+      inject: options.inject || [],
+    };
+  }
+}

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { SubscriptionDto } from '../dto/subscription.dto';
-import { StripeSubscriptionService } from './stripe-subscription.service';
+import { StripeSubscriptionService } from 'src/stripe';
+import { SubscriptionDto } from './dto/subscription.dto';
 
 @Controller('stripe/subscriptions')
 export class StripeSubscriptionController {

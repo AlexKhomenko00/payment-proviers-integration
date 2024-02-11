@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { stripeConfig } from './config/stripe.config';
-import { StripeModule } from './stripe/stripe.module';
+import { stripeConfig } from 'src/config/stripe.config';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -9,7 +9,7 @@ import { StripeModule } from './stripe/stripe.module';
       isGlobal: true,
       load: [stripeConfig],
     }),
-    StripeModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],

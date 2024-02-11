@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { StripeService } from 'src/stripe';
 import { StripeCreditCardDto } from './dto/credit-card.dto';
-import { StripeService } from './stripe.service';
 
 @Controller('stripe/credit-card')
 export class StripeCreditCardController {

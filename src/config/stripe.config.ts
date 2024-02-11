@@ -1,11 +1,5 @@
 import { registerAs } from '@nestjs/config';
-
-interface StripeConfig {
-  secret: string;
-  currency: string;
-  subscriptionPriceId: string;
-  webhookSecret: string;
-}
+import { StripeConfig } from 'src/stripe';
 
 export const stripeConfig = registerAs<StripeConfig>('stripe', () => ({
   secret: process.env.STRIPE_SECRET_KEY,

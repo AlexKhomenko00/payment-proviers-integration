@@ -4,20 +4,20 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { stripeConfig } from 'src/config/stripe.config';
-import { StripeService } from '../stripe.service';
+import { StripeOptions } from './interfaces/stripe-config.interface';
+import { STRIPE_MODULE_OPTIONS } from './stripe.constants';
+import { StripeService } from './stripe.service';
 
 @Injectable()
 export class StripeSubscriptionService {
   constructor(
     private readonly stripeService: StripeService,
-    @Inject(stripeConfig.KEY)
-    private readonly config: ConfigType<typeof stripeConfig>,
+    @Inject(STRIPE_MODULE_OPTIONS)
+    private readonly options: StripeOptions,
   ) {}
 
   public async createMonthlySubscription(customerId: string) {
-    const priceId = this.config.subscriptionPriceId;
+    const priceId = this.options.config.subscriptionPriceId;
 
     const subscriptions = await this.stripeService.listSubscriptions({
       priceId,
@@ -30,7 +30,7 @@ export class StripeSubscriptionService {
   }
 
   public async getMonthlySubscription(customerId: string) {
-    const priceId = this.config.subscriptionPriceId;
+    const priceId = this.options.config.subscriptionPriceId;
     const subscriptions = await this.stripeService.listSubscriptions({
       priceId,
       customerId,

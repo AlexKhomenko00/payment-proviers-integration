@@ -1,16 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { stripeConfig } from '../config/stripe.config';
 import Stripe from 'stripe';
+import { StripeOptions } from './interfaces/stripe-config.interface';
+import { CreateStripeCustomerPayload } from './interfaces/stripe-create-customer-payload.interface';
+import { CreditCardPayload } from './interfaces/stripe-credit-card-payload.interface';
+import { StripePaymentIntentPayload } from './interfaces/stripe-payment-intent.interface';
+import { SubscriptionPayload } from './interfaces/stripe-subscription-payload.interface';
+import { STRIPE_MODULE_OPTIONS } from './stripe.constants';
 
 @Injectable()
 export class StripeService {
   private readonly stripe: Stripe;
   constructor(
-    @Inject(stripeConfig.KEY)
-    private readonly config: ConfigType<typeof stripeConfig>,
+    @Inject(STRIPE_MODULE_OPTIONS)
+    private readonly options: StripeOptions,
   ) {
-    this.stripe = new Stripe(this.config.secret, { apiVersion: '2023-10-16' });
+    this.stripe = new Stripe(this.options.config.secret, {
+      apiVersion: '2023-10-16',
+    });
   }
 
   async createCustomer(
@@ -28,7 +34,7 @@ export class StripeService {
   async charge(payload: StripePaymentIntentPayload) {
     const paymentIntent = await this.stripe.paymentIntents.create({
       ...payload,
-      currency: this.config.currency,
+      currency: this.options.config.currency,
       confirm: true,
     });
 
@@ -79,7 +85,7 @@ export class StripeService {
   }
 
   public async constructWebhookEvent(signature: string, payload: Buffer) {
-    const webhookSecret = this.config.webhookSecret;
+    const webhookSecret = this.options.config.webhookSecret;
 
     return this.stripe.webhooks.constructEvent(
       payload,
@@ -87,25 +93,4 @@ export class StripeService {
       webhookSecret,
     );
   }
-}
-
-interface SubscriptionPayload {
-  customerId: string;
-  priceId: string;
-}
-
-interface CreditCardPayload {
-  customerId: string;
-  paymentMethodId: string;
-}
-
-interface CreateStripeCustomerPayload {
-  name: string;
-  email: string;
-}
-
-interface StripePaymentIntentPayload {
-  amount: number;
-  customerId: string;
-  paymentMethodId: string;
 }
