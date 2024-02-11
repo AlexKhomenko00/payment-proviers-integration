@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, HttpCode, Post } from '@nestjs/common';
 import { StripeService } from 'src/stripe';
+import { PaymentControllerController } from '../payment.controller.decorator';
 import { StripeCreditCardDto } from './dto/credit-card.dto';
 
-@Controller('stripe/credit-card')
+@PaymentControllerController('stripe/credit-card')
 export class StripeCreditCardController {
   constructor(private readonly stripeService: StripeService) {}
 
