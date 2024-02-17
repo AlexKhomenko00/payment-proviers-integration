@@ -1,7 +1,7 @@
 import { Headers, Logger, Post, RawBodyRequest, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { StripeService } from 'src/stripe';
-import { PaymentControllerController } from '../payment.controller.decorator';
+import { PaymentControllerController } from '../../payment.controller.decorator';
 
 @PaymentControllerController('stripe-webhook')
 export class StripeWebhookController {
