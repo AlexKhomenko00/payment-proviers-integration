@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { StripeOptions } from './interfaces/stripe-config.interface';
+import { StripeOptions } from './interfaces/stripe-module-options.interface';
 import { STRIPE_MODULE_OPTIONS } from './stripe.constants';
 import { StripeService } from './stripe.service';
 

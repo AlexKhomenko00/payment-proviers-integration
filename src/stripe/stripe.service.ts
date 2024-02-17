@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
-import { StripeOptions } from './interfaces/stripe-config.interface';
+import { StripeOptions } from './interfaces/stripe-module-options.interface';
 import { CreateStripeCustomerPayload } from './interfaces/stripe-create-customer-payload.interface';
 import { CreditCardPayload } from './interfaces/stripe-credit-card-payload.interface';
 import { StripePaymentIntentPayload } from './interfaces/stripe-payment-intent.interface';

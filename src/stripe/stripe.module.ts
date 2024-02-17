@@ -1,5 +1,5 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
-import { StripeModuleRegisterOptions } from './interfaces/stripe-config.interface';
+import { StripeModuleRegisterOptions } from './interfaces/stripe-module-options.interface';
 import { STRIPE_MODULE_OPTIONS } from './stripe.constants';
 import { StripeService } from './stripe.service';
 import { StripeSubscriptionService } from './stripe-subscription.service';
