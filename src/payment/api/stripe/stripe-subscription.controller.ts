@@ -1,9 +1,9 @@
 import { Body, Get, Post } from '@nestjs/common';
 import { StripeSubscriptionService } from 'src/stripe';
 import { SubscriptionDto } from './dto/subscription.dto';
-import { PaymentControllerController } from '../../payment.controller.decorator';
+import { PaymentController } from '../../payment.controller.decorator';
 
-@PaymentControllerController('stripe/subscriptions')
+@PaymentController('stripe/subscriptions')
 export class StripeSubscriptionController {
   constructor(
     private readonly subscriptionsService: StripeSubscriptionService,

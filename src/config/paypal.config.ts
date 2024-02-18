@@ -8,4 +8,5 @@ export const paypalConfig = registerAs<PayPalModuleConfig>('paypal', () => ({
   environment: process.env.PAYPAL_ENVIRONMENT as 'sandbox' | 'live',
   returnUrl: process.env.PAYPAL_RETURN_URL,
   cancelUrl: process.env.PAYPAL_CANCEL_URL,
+  monthlyPlanId: process.env.PAYPAL_MONTHLY_PLAN_ID,
 }));

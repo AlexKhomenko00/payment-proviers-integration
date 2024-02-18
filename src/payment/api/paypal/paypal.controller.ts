@@ -1,10 +1,10 @@
 import { Body, Get, Post, Query } from '@nestjs/common';
-import { PaymentControllerController } from 'src/payment/payment.controller.decorator';
+import { PaymentController } from 'src/payment/payment.controller.decorator';
 import { PayPalService } from 'src/paypal';
 import { PayPalPaymentDto } from './dto/paypal-payment.dto';
 import { PayPalCaptureOrderQueryDto } from './query/capture-order.query.dto';
 
-@PaymentControllerController('paypal')
+@PaymentController('paypal')
 export class PayPalController {
   constructor(private readonly paypalService: PayPalService) {}
 
